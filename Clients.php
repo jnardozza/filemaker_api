@@ -1,10 +1,30 @@
 <?php
+require_once "FM_Table.php";
 
-class Clients
+class Clients extends FM_Table
 {
 	private static $table = "CLIENTS";
 	private static $layout = "CLIENTS";
 	private static $api_find = "api_Clients.Find";
+	private static $fields = array(
+			"id" => "_kp_ID",
+			"active" => "isActive",
+			"name" => "Name_Display_calc",
+			"nameFirst" => "Name_First",
+			"nameLast" => "Name_Last",
+			"status" => "Status",
+		);
+
+	#====================================================================================================
+	#GET AS OBJECT
+	#====================================================================================================
+	public static function getAsObject($records){
+		$result = parent::getAsObject($records, self::$fields);
+		return $result;
+	}
+	#====================================================================================================
+	#END GET AS OBJECT
+	#====================================================================================================
 
 	#====================================================================================================
 	#FIND EVENTS
@@ -18,19 +38,7 @@ class Clients
 		}
 
 		$records = $result->getRecords();
-
-		$result = [];
-		foreach ($records as $client) {
-			$c = [];
-			$c["id"] 			= $client->getField("_kp_ID");
-			$c["active"] 		= $client->getField("isActive");
-			$c["name"] 			= $client->getField("Name_Display_calc");
-			$c["nameFirst"] 	= $client->getField("Name_First");
-			$c["nameLast"] 		= $client->getField("Name_Last");
-			$c["status"] 		= $client->getField("Status");
-
-			$result[] = $c;
-		}
+		$result = $this->getAsObject($records);
 		return $result;
 	}
 	#====================================================================================================

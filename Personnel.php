@@ -1,10 +1,35 @@
 <?php
+require_once "FM_Table.php";
 
-class Personnel
+class Personnel extends FM_Table
 {
 	private static $table = "PERSONNEL";
 	private static $layout = "API_PERSONNEL";
 	private static $api_find = "api_Personnel.Find";
+	private static $fields = array(
+			"id" => "_kp_ID",
+			"active" => "isActive",
+			"age" => "Age_calc",
+			"birthday" => "Birthday",
+			"dateHired" => "Date_Hired",
+			"dateLeft" => "Date_Left",
+			"name" => "Name_Display_calc",
+			"nameFirst" => "Name_First",
+			"nameLast" => "Name_Last",
+			"status" => "Status",
+			"username" => "Username_Web",
+		);
+
+	#====================================================================================================
+	#GET AS OBJECT
+	#====================================================================================================
+	public static function getAsObject($records){
+		$result = parent::getAsObject($records, self::$fields);
+		return $result;
+	}
+	#====================================================================================================
+	#END GET AS OBJECT
+	#====================================================================================================
 
 	#====================================================================================================
 	#FIND EVENTS
@@ -18,24 +43,7 @@ class Personnel
 		}
 
 		$records = $result->getRecords();
-
-		$result = [];
-		foreach ($records as $personnel) {
-			$p = [];
-			$p["id"] 			= $personnel->getField("_kp_ID");
-			$p["active"] 		= $personnel->getField("isActive");
-			$p["age"] 			= $personnel->getField("Age_calc");
-			$p["birthday"] 		= $personnel->getField("Birthday");
-			$p["dateHired"] 	= $personnel->getField("Date_Hired");
-			$p["dateLeft"] 		= $personnel->getField("Date_Left");
-			$p["name"] 			= $personnel->getField("Name_Display_calc");
-			$p["nameFirst"] 	= $personnel->getField("Name_First");
-			$p["nameLast"] 		= $personnel->getField("Name_Last");
-			$p["status"] 		= $personnel->getField("Status");
-			$p["username"] 		= $personnel->getField("Username_Web");
-
-			$result[] = $p;
-		}
+		$result = $this->getAsObject($records);
 		return $result;
 	}
 	#====================================================================================================

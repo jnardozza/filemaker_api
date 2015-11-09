@@ -1,12 +1,44 @@
 <?php
+require_once "FM_Table.php";
 include_once "Personnel.php";
 include_once "Clients.php";
 
-class Events
+class Events extends FM_Table
 {
 	private static $table = "EVENTS";
 	private static $layout = "API_EVENTS";
 	private static $api_find = "api_Events.Find";
+	private static $fields = array(
+			"id" => "_kp_ID",
+			"active" => "isActive",
+			"client_id" => "_kf_ClientID",
+			"clientName" => "Client_Display_calc",
+			"service_id" => "_kf_ServiceID",
+			"serviceName" => "Service_Display_calc",
+			"personnel_id" => "_kf_PersonnelID",
+			"personnelName" => "Personnel_Display_calc",
+			"start_unix" => "Start_unix",
+			"end_unix" => "End_unix",
+			"time_start" => "Time_Start",
+			"time_end" => "Time_End",
+			"date" => "Date",
+			"title" => "Title",
+			"description" => "Description",
+			"comments" => "Comnents",
+			"allDay" => "isAllDay",
+		);
+
+	#====================================================================================================
+	#GET AS OBJECT
+	#====================================================================================================
+	public static function getAsObject($records){
+		$result = parent::getAsObject($records, self::$fields);
+		return $result;
+	}
+	#====================================================================================================
+	#END GET AS OBJECT
+	#====================================================================================================
+
 
 	#====================================================================================================
 	#FIND EVENTS
@@ -21,29 +53,8 @@ class Events
 
 		$records = $result->getRecords();
 
-		$result = [];
-		foreach ($records as $event) {
-			$e = [];
-			$e["id"] 			= $event->getField("_kp_ID");
-			$e["active"] 		= $event->getField("isActive");
-			$e["client_id"] 	= $event->getField("_kf_ClientID");
-			$e["clientName"] 	= $event->getField("Client_Display_calc");
-			$e["service_id"] 	= $event->getField("_kf_ServiceID");
-			$e["serviceName"] 	= $event->getField("Service_Display_calc");
-			$e["personnel_id"] 	= $event->getField("_kf_PersonnelID");
-			$e["personnelName"] = $event->getField("Personnel_Display_calc");
-			$e["start_unix"] 	= $event->getField("Start_unix");
-			$e["end_unix"] 		= $event->getField("End_unix");
-			$e["time_start"] 	= $event->getField("Time_Start");
-			$e["time_end"] 		= $event->getField("Time_End");
-			$e["date"] 			= $event->getField("Date");
-			$e["title"] 		= $event->getField("Title");
-			$e["description"] 	= $event->getField("Description");
-			$e["comments"] 		= $event->getField("Comnents");
-			$e["allDay"]		= $event->getField("isAllDay");
-
-			$result[] = $e;
-		}
+		$result = $this->getAsObject($records);
+		
 		return $result;
 	}
 	#====================================================================================================
