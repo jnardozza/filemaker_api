@@ -1,0 +1,76 @@
+<?php
+
+class Schedules
+{
+	private static $table = "SCHEDULES";
+	private static $layout = "API_SCHEDULES";
+	private static $api_find = "api_Schedules.Find";
+	private static $api_new = "api_Schedules.New";
+
+	#====================================================================================================
+	#FIND SCHEDULES
+	#====================================================================================================
+	public function find($parameter, $connection){
+		$find = $connection->newPerformScriptCommand(self::$layout, self::$api_find, $parameter);
+		$result = $find->execute();
+
+		if (Filemaker::isError($result)) {
+			echo $result->getMessage();
+		}
+
+		$records = $result->getRecords();
+
+		$result = [];
+		foreach ($records as $schedule) {
+			$s = [];
+			$s["id"] 					= $schedule->getField("_kp_ID");
+			$s["client_id"] 			= $schedule->getField("_kf_ClientID");
+			$s["personnel_id"] 			= $schedule->getField("_kf_PersonnelID");
+			$s["service_id"] 			= $schedule->getField("_kf_ServiceID");
+			$s["dateEnd"] 				= $schedule->getField("Date_End");
+			$s["dateStart"] 			= $schedule->getField("Date_Start");
+			$s["timeStart"] 			= $schedule->getField("Time_Start");
+			$s["timeEnd"] 				= $schedule->getField("Time_End");
+			$s["title"] 				= $schedule->getField("Title");
+			$s["description"] 			= $schedule->getField("Description");
+			$s["repeating"] 			= $schedule->getField("isRepeating");
+			
+			$s["sunday"] 				= $schedule->getField("Repeat_Sundays");
+			$s["sundayTimeStart"] 		= $schedule->getField("Time_Start_Sunday");
+			$s["sundayTimeEnd"] 		= $schedule->getField("Time_End_Sunday");
+			
+			$s["monday"] 				= $schedule->getField("Repeat_Mondays");
+			$s["mondayTimeStart"] 		= $schedule->getField("Time_Start_Monday");
+			$s["mondayTimeEnd"] 		= $schedule->getField("Time_End_Monday");
+			
+			$s["tuesday"] 				= $schedule->getField("Repeat_Tuesdays");
+			$s["tuesdayTimeStart"] 		= $schedule->getField("Time_Start_Tuesday");
+			$s["tuesdayTimeEnd"] 		= $schedule->getField("Time_End_Tuesday");
+			
+			$s["wednesday"] 			= $schedule->getField("Repeat_Wednesdays");
+			$s["wednesdayTimeStart"]	= $schedule->getField("Time_Start_Wednesday");
+			$s["wednesdayTimeEnd"] 		= $schedule->getField("Time_End_Wednesday");
+			
+			$s["thursday"] 				= $schedule->getField("Repeat_Thursdays");
+			$s["thursdayTimeStart"] 	= $schedule->getField("Time_Start_Thursday");
+			$s["thursdayTimeEnd"] 		= $schedule->getField("Time_End_Thursday");
+			
+			$s["friday"] 				= $schedule->getField("Repeat_Fridays");
+			$s["fridayTimeStart"] 		= $schedule->getField("Time_Start_Friday");
+			$s["fridayTimeEnd"] 		= $schedule->getField("Time_End_Friday");
+			
+			$s["saturday"] 				= $schedule->getField("Repeat_Saturdays");
+			$s["saturdayTimeStart"] 	= $schedule->getField("Time_Start_Saturday");
+			$s["saturdayTimeEnd"] 		= $schedule->getField("Time_End_Saturday");
+			
+			$s["weeks"] 				= $schedule->getField("Repeat_Weeks");
+
+			$result[] = $s;
+		}
+		return $result;
+	}
+	#====================================================================================================
+	#END FIND SCHEDULES
+	#====================================================================================================
+}
+?>
