@@ -8,7 +8,7 @@ class FM_Table
 	public static function getAsObject($records, $fields){
 		$result = [];
 		foreach ($records as $record) {
-			$e = [];
+			$r = [];
 			foreach ($fields as $attribute => $field) {
 				$r[$attribute] = $record->getField($field);
 			}
@@ -18,6 +18,22 @@ class FM_Table
 	}
 	#====================================================================================================
 	#END GET AS OBJECT
+	#====================================================================================================
+
+
+	#====================================================================================================
+	#GET AS PARAMETER - accepts a dictionary of $attribute => $value and converts to $field => $value
+	#====================================================================================================
+	public static function getAsParameter($request, $fields){
+		$result = [];
+		foreach ($request as $attribute => $value) {
+			$field = $fields[$attribute];
+			$result[$field] = $value;
+		}
+		return $result;
+	}
+	#====================================================================================================
+	#END GET AS PARAMETER
 	#====================================================================================================
 }
 ?>
