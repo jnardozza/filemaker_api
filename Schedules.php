@@ -55,8 +55,8 @@ class Schedules extends FM_Table
 	#====================================================================================================
 	#GET AS OBJECT
 	#====================================================================================================
-	public static function getAsObject($records){
-		$result = parent::getAsObject($records, self::$fields);
+	public static function getAsObject($records, $fields){
+		$result = parent::getAsObject($records, $fields);
 		return $result;
 	}
 	#====================================================================================================
@@ -67,12 +67,23 @@ class Schedules extends FM_Table
 	#====================================================================================================
 	#GET AS PARAMETER
 	#====================================================================================================
-	public static function getAsParameter($request){
-		$result = parent::getAsParameter($request, self::$fields);
+	public static function getAsParameter($request, $fields){
+		$result = parent::getAsParameter($request, $fields);
 		return $result;
 	}
 	#====================================================================================================
 	#END GET AS PARAMETER
+	#====================================================================================================
+
+
+	#====================================================================================================
+	#GET FIELDS
+	#====================================================================================================
+	public static function getFields(){
+		return self::$fields;
+	}
+	#====================================================================================================
+	#END GET FIELDS
 	#====================================================================================================
 
 
@@ -88,7 +99,7 @@ class Schedules extends FM_Table
 		}
 
 		$records = $result->getRecords();
-		$result = $this->getAsObject($records);
+		$result = $this->getAsObject($records, self::$fields);
 		return $result;
 	}
 	#====================================================================================================
@@ -108,7 +119,7 @@ class Schedules extends FM_Table
 		}
 
 		$records = $result->getRecords();
-		$result = Events::getAsObject($records);
+		$result = Events::getAsObject($records, self::$fields);
 		return $result;
 	}
 	#====================================================================================================

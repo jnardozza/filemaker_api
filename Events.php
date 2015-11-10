@@ -31,8 +31,8 @@ class Events extends FM_Table
 	#====================================================================================================
 	#GET AS OBJECT
 	#====================================================================================================
-	public static function getAsObject($records){
-		$result = parent::getAsObject($records, self::$fields);
+	public static function getAsObject($records, $fields){
+		$result = parent::getAsObject($records, $fields);
 		return $result;
 	}
 	#====================================================================================================
@@ -53,7 +53,7 @@ class Events extends FM_Table
 
 		$records = $result->getRecords();
 
-		$result = $this->getAsObject($records);
+		$result = $this->getAsObject($records, self::$fields);
 		
 		return $result;
 	}
