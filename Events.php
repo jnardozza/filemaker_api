@@ -19,9 +19,11 @@ class Events extends FM_Table
 			"personnelName" => "Personnel_Display_calc",
 			"start_unix" => "Start_unix",
 			"end_unix" => "End_unix",
+			"duration_unix" => "Duration_unix",
 			"time_start" => "Time_Start",
 			"time_end" => "Time_End",
 			"date" => "Date",
+			"dateSearch" => "Date_Search_calc",
 			"title" => "Title",
 			"description" => "Description",
 			"comments" => "Comnents",
@@ -37,6 +39,29 @@ class Events extends FM_Table
 	}
 	#====================================================================================================
 	#END GET AS OBJECT
+	#====================================================================================================
+
+
+	#====================================================================================================
+	#GET AS PARAMETER
+	#====================================================================================================
+	public static function getAsParameter($request, $fields){
+		$result = parent::getAsParameter($request, $fields);
+		return $result;
+	}
+	#====================================================================================================
+	#END GET AS PARAMETER
+	#====================================================================================================
+
+
+	#====================================================================================================
+	#GET FIELDS
+	#====================================================================================================
+	public static function getFields(){
+		return self::$fields;
+	}
+	#====================================================================================================
+	#END GET FIELDS
 	#====================================================================================================
 
 
@@ -120,7 +145,8 @@ class Events extends FM_Table
 	#GET CALENDAR EVENTS
 	#====================================================================================================
 	public function getCalendarEvents($findObject, $connection, $resource){
-
+		$findObject = self::getAsParameter($findObject, self::$fields);
+		$findObject = json_encode($findObject);
 		$eventSearchResult = $this->find($findObject, $connection);
 		
 		$events = [];
